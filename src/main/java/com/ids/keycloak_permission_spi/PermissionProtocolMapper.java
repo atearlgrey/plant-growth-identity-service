@@ -12,7 +12,7 @@ import java.util.*;
 public class PermissionProtocolMapper extends AbstractOIDCProtocolMapper
         implements OIDCAccessTokenMapper, OIDCIDTokenMapper, UserInfoTokenMapper {
 
-    public static final String PROVIDER_ID = "idc-permission-mapper";
+    public static final String PROVIDER_ID = "ids-permission-mapper";
     private static final Logger LOG = Logger.getLogger(PermissionProtocolMapper.class);
 
     @Override
@@ -22,7 +22,7 @@ public class PermissionProtocolMapper extends AbstractOIDCProtocolMapper
 
     @Override
     public String getDisplayType() {
-        return "IDC Permission Mapper";
+        return "IDS Permission Mapper";
     }
 
     @Override
@@ -59,14 +59,14 @@ public class PermissionProtocolMapper extends AbstractOIDCProtocolMapper
         String claimName = mappingModel.getConfig().get(OIDCAttributeMapperHelper.TOKEN_CLAIM_NAME);
 
         if (claimName == null || claimName.isEmpty()) {
-            LOG.warn("[IDC] Claim name is missing — skipping mapping.");
+            LOG.warn("[IDS] Claim name is missing — skipping mapping.");
             return;
         }
 
         // You can later replace this with database query logic
         List<String> permissions = List.of("READ", "WRITE", "DELETE");
 
-        LOG.infof("[IDC] setClaim called for user %s, claim=%s, permissions=%s",
+        LOG.infof("[IDS] setClaim called for user %s, claim=%s, permissions=%s",
                 userSession.getUser().getUsername(), claimName, permissions);
 
         token.getOtherClaims().put(claimName, permissions);
