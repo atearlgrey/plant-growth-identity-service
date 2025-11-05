@@ -1,5 +1,8 @@
-package com.ids.keycloak_permission_spi;
+package com.ids.keycloak_permission_spi.application;
 
+import com.ids.keycloak_permission_spi.domain.model.Permission;
+import com.ids.keycloak_permission_spi.domain.service.PermissionService;
+import com.ids.keycloak_permission_spi.infrastructure.repository.PermissionRepositoryImpl;
 import org.jboss.logging.Logger;
 import org.keycloak.models.*;
 import org.keycloak.protocol.oidc.OIDCLoginProtocol;
@@ -63,8 +66,14 @@ public class PermissionProtocolMapper extends AbstractOIDCProtocolMapper
             return;
         }
 
-        // You can later replace this with database query logic
-        List<String> permissions = List.of("READ", "WRITE", "DELETE");
+        // Load permission services
+        PermissionService permissionService = new PermissionService(new PermissionRepositoryImpl(keycloakSession));
+
+        // Get list permissions
+        List<String> permissions = permissionService.getUserPermissions(userSession.getUser().getId())
+                .stream()
+                .map(Permission::getResourceCode)
+                .toList();
 
         LOG.infof("[IDS] setClaim called for user %s, claim=%s, permissions=%s",
                 userSession.getUser().getUsername(), claimName, permissions);

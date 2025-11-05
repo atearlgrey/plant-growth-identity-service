@@ -1,0 +1,37 @@
+# Maven build directory
+target/
+
+# IDE files
+.idea/
+*.iml
+.vscode/
+*.sublime-workspace
+*.sublime-project
+.project
+.classpath
+.settings/
+
+# Git directory
+.git/
+.gitignore
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+*.tmp
+*.swp
+*~
+
+# Test coverage reports
+jacoco.exec
+coverage/
+
+# Local configuration
+.env
+*.properties.local
+application-local.properties
+
+# Other
+.DS_Store
