@@ -6,6 +6,8 @@ import org.keycloak.models.KeycloakSession;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
+
+import java.time.LocalDateTime;
 import java.util.*;
 
 public class PermissionRepositoryImpl implements PermissionRepository {
@@ -20,7 +22,7 @@ public class PermissionRepositoryImpl implements PermissionRepository {
     public List<Permission> findByUserId(String userId) {
         Query q = em.createNativeQuery("""
             SELECT *
-            FROM view_user_permissions
+            FROM view_ids_user_permissions
             WHERE user_id = ?1
         """);
         q.setParameter(1, userId);
@@ -43,10 +45,8 @@ public class PermissionRepositoryImpl implements PermissionRepository {
                     (String) r[8],
                     (String) r[9],
                     (String) r[10],
-                    (Boolean) r[11],
-                    (Integer) r[12],
-                    (String) r[13],
-                    (Boolean) r[14]
+                    (LocalDateTime) r[11],
+                    (Boolean) r[12]
             ));
         }
 

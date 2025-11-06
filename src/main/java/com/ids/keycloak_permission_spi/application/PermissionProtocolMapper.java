@@ -1,8 +1,11 @@
 package com.ids.keycloak_permission_spi.application;
 
 import com.ids.keycloak_permission_spi.domain.model.Permission;
+import com.ids.keycloak_permission_spi.domain.model.SystemMenu;
 import com.ids.keycloak_permission_spi.domain.service.PermissionService;
+import com.ids.keycloak_permission_spi.domain.service.SystemMenuService;
 import com.ids.keycloak_permission_spi.infrastructure.repository.PermissionRepositoryImpl;
+import com.ids.keycloak_permission_spi.infrastructure.repository.SystemMenuRepositoryImpl;
 import org.jboss.logging.Logger;
 import org.keycloak.models.*;
 import org.keycloak.protocol.oidc.OIDCLoginProtocol;
@@ -68,17 +71,24 @@ public class PermissionProtocolMapper extends AbstractOIDCProtocolMapper
 
         // Load permission services
         PermissionService permissionService = new PermissionService(new PermissionRepositoryImpl(keycloakSession));
+        SystemMenuService systemMenuService = new SystemMenuService(new SystemMenuRepositoryImpl(keycloakSession));
 
         // Get list permissions
         List<String> permissions = permissionService.getUserPermissions(userSession.getUser().getId())
                 .stream()
                 .map(Permission::getResourceCode)
                 .toList();
-
         LOG.infof("[IDS] setClaim called for user %s, claim=%s, permissions=%s",
                 userSession.getUser().getUsername(), claimName, permissions);
 
         token.getOtherClaims().put(claimName, permissions);
+
+        // Get list system menus
+        List<SystemMenu> menus = systemMenuService.getMenusForUser(userSession.getUser().getId());
+        LOG.infof("[IDS] setClaim called for user %s, claim=%s, menus=%s",
+                userSession.getUser().getUsername(), "menus", menus);
+
+        token.getOtherClaims().put("menus", menus);
     }
 
     @Override

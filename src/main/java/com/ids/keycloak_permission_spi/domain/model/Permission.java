@@ -1,6 +1,7 @@
 package com.ids.keycloak_permission_spi.domain.model;
 
 import lombok.*;
+import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
@@ -10,15 +11,13 @@ public class Permission {
     private String roleId;
     private String roleName;
     private String clientId;
-    private String resourceId;
+    private String functionCode;
+    private String functionTitle;
     private String resourceCode;
-    private String resourceName;
-    private String resourceType;
+    private String resourceTitle;
     private String resourcePath;
-    private String resourceIcon;
-    private String resourceParentId;
-    private Boolean resourceVisible;
-    private Integer resourceSortOrder;
-    private String permissionAction;
-    private Boolean permissionActive;
+    private String resourceMethod;
+    private String permissionId;
+    private LocalDateTime permissionExpiredDate;
+    private Boolean permissionEnabled;
 }
